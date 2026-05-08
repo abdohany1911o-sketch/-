@@ -17,8 +17,8 @@ export default function AdminCreateUser({ onBack }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.endsWith("@eximq")) {
-  alert("يجب أن ينتهي البريد بـ @eximq");
+    if (!email.endsWith("@eximq.com")) {
+  alert("يجب أن ينتهي البريد بـ @eximq.com");
   return;
 }
     setError('');
