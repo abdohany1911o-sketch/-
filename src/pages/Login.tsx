@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import logo from "../assets/logo.png";
 import { useNavigate } from 'react-router-dom';
-import { CalendarCheck, Eye, EyeOff, LogIn } from 'lucide-react';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { Eye, EyeOff, LogIn } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,37 +11,45 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    setError('');
 
     if (!email.endsWith("@eximq.com")) {
       setError("يجب استخدام بريد ينتهي بـ @eximq.com");
       return;
     }
 
-    setError('');
+    const users = JSON.parse(localStorage.getItem("eximq_users") || "[]");
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
+    // 👇 admin ثابت
+    if (email === "admin@eximq.com" && password === "admin123") {
+      localStorage.setItem("role", "admin");
+      localStorage.setItem("currentUser", JSON.stringify({
+        id: "admin",
+        name: "Admin",
+        email,
+        role: "admin",
+        college: "Admin"
+      }));
 
-      const login = async (email: string, password: string) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
+      navigate("/dashboard");
+      return;
+    }
 
-    const role = email === "admin@eximq.com" ? "admin" : "user";
+    // 👇 user عادي
+    const user = users.find(
+      (u: any) => u.email === email && u.password === password
+    );
 
-    localStorage.setItem("role", role);
+    if (user) {
+      localStorage.setItem("role", "user");
+      localStorage.setItem("currentUser", JSON.stringify(user));
 
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-      navigate('/dashboard');
-
-    } catch (error) {
-      setError('بيانات الدخول غير صحيحة');
+      navigate("/dashboard");
+    } else {
+      setError("بيانات الدخول غير صحيحة");
     }
   };
 
@@ -53,11 +59,7 @@ export default function Login() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
 
           <div className="text-center mb-8">
-            <img
-              src={logo}
-              alt="logo"
-              className="w-28 mx-auto mb-4"
-            />
+            <img src={logo} alt="logo" className="w-28 mx-auto mb-4" />
 
             <h1 className="text-3xl font-extrabold text-gray-800 mb-2">
               Eximq
@@ -85,7 +87,7 @@ export default function Login() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-800"
                 placeholder="أدخل بريدك الإلكتروني"
                 required
               />
@@ -99,10 +101,10 @@ export default function Login() {
               <div className="relative">
 
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-800"
                   placeholder="أدخل كلمة المرور"
                   required
                 />
@@ -110,7 +112,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -124,7 +126,7 @@ export default function Login() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <LogIn className="w-5 h-5" />
               تسجيل الدخول

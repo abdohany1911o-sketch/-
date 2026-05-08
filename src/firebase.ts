@@ -1,17 +1,35 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+
+import {
+  getFirestore
+} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDoMamDkCRcJWDkkkohwiJ-STrLovpWQ",
-  authDomain: "eximqq.firebaseapp.com",
-  projectId: "eximqq",
-  storageBucket: "eximqq.firebasestorage.app",
-  messagingSenderId: "1073252736269",
-  appId: "1:1073252736269:web:3f4f4d161e53e2d1a8e444"
+
+  apiKey:
+    "AIzaSyDWVEoBVmFzJ25PcQQ-69NuTGtA7u_svIk",
+
+  authDomain:
+    "eximq-b0e92.firebaseapp.com",
+
+  projectId:
+    "eximq-b0e92",
+
+  storageBucket:
+    "eximq-b0e92.firebasestorage.app",
+
+  messagingSenderId:
+    "458301665779",
+
+  appId:
+    "1:458301665779:web:7b6bc28e98dd681750e286",
+
+  measurementId:
+    "G-SH8B6QEMC7"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-// 🔥 مهم جدًا
-export const auth = getAuth(app);
+export const db =
+  getFirestore(app);

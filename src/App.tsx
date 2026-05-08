@@ -10,12 +10,14 @@ import { useState } from 'react';
 
 function DashboardRouter() {
   const { currentUser, loading } = useAuth();
-  if (loading) return null;
   const [view, setView] = useState<'dashboard' | 'createUser'>('dashboard');
 
+  if (loading) return null;
   if (!currentUser) return <Navigate to="/" replace />;
 
-  if (currentUser.role === 'admin') {
+  const role = localStorage.getItem("role");
+
+  if (role === "admin") {
     return view === 'dashboard'
       ? <AdminDashboard onCreateUser={() => setView('createUser')} />
       : <AdminCreateUser onBack={() => setView('dashboard')} />;

@@ -38,38 +38,71 @@ export default function UserDashboard() {
   const userBookings = bookings.filter((b: Booking) => b.userId === currentUser?.id);
 
   const handleLogout = () => { logout(); navigate('/'); };
+const handleChangePassword = async (
+  e: React.FormEvent
+) => {
 
-  const handleChangePassword = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPwdError('');
-    setPwdSuccess('');
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      setPwdError('جميع الحقول مطلوبة');
-      return;
-    }
-    if (oldPassword !== currentUser?.password) {
-      setPwdError('كلمة المرور الحالية غير صحيحة');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setPwdError('كلمتا المرور الجديدة غير متطابقتين');
-      return;
-    }
-    if (newPassword.length < 4) {
-      setPwdError('كلمة المرور يجب أن تكون 4 أحرف على الأقل');
-      return;
-    }
-    const result = updatePassword(currentUser!.id, newPassword);
-    if (result) {
-      setPwdSuccess('تم تغيير كلمة المرور بنجاح');
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setTimeout(() => setShowChangePassword(false), 1500);
-    } else {
-      setPwdError('حدث خطأ أثناء تغيير كلمة المرور');
-    }
-  };
+  e.preventDefault();
+
+  setPwdError('');
+  setPwdSuccess('');
+
+  if (!oldPassword || !newPassword || !confirmPassword) {
+
+    setPwdError('جميع الحقول مطلوبة');
+
+    return;
+  }
+
+  if (oldPassword !== currentUser?.password) {
+
+    setPwdError('كلمة المرور الحالية غير صحيحة');
+
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+
+    setPwdError('كلمتا المرور الجديدة غير متطابقتين');
+
+    return;
+  }
+
+  if (newPassword.length < 4) {
+
+    setPwdError('كلمة المرور يجب أن تكون 4 أحرف على الأقل');
+
+    return;
+  }
+
+  const result = await updatePassword(
+    currentUser!.id,
+    newPassword
+  );
+
+  if (result) {
+
+    setPwdSuccess(
+      'تم تغيير كلمة المرور بنجاح'
+    );
+
+    setOldPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+
+    setTimeout(() => {
+
+      setShowChangePassword(false);
+
+    }, 1500);
+
+  } else {
+
+    setPwdError(
+      'حدث خطأ أثناء تغيير كلمة المرور'
+    );
+  }
+};
 
   const handleSaveForm = (e: React.FormEvent) => {
     e.preventDefault();
