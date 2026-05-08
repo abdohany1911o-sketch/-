@@ -28,9 +28,9 @@ export default function Login() {
 
       const userData = {
   email,
-  role: email === "admin@eximq.com"
-    ? "admin"
-    : "user"
+  role: email.includes("admin")
+  ? "admin"
+  : "user"
 };
 
 localStorage.setItem(
