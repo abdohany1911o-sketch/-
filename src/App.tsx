@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Register from './pages/Register';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { BookingProvider } from './context/BookingContext';
 import Login from './pages/Login';
@@ -30,6 +31,7 @@ function App() {
         <BookingProvider>
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<DashboardRouter />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
