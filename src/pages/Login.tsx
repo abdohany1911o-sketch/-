@@ -26,19 +26,19 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-     const role =
-  email === "admin@eximq.com"
+      const userData = {
+  email,
+  role: email === "admin@eximq.com"
     ? "admin"
-    : "user";
+    : "user"
+};
 
 localStorage.setItem(
   "eximq_user",
-  JSON.stringify({
-    email,
-    role
-  })
+  JSON.stringify(userData)
 );
-      navigate('/dashboard');
+
+window.location.href = "/dashboard";
 
     } catch (error) {
       setError('بيانات الدخول غير صحيحة');
