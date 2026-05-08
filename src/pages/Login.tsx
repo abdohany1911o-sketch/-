@@ -26,10 +26,19 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      localStorage.setItem(
-        "eximq_user",
-        JSON.stringify({ email })
-      );
+      const login = async (email: string, password: string) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+
+    const role = email === "admin@eximq.com" ? "admin" : "user";
+
+    localStorage.setItem("role", role);
+
+    return true;
+  } catch {
+    return false;
+  }
+};
 
       navigate('/dashboard');
 
