@@ -43,6 +43,9 @@ setLoading(false);
   const login = (email: string, password: string): boolean => {
     const users = JSON.parse(localStorage.getItem('eximq_users') || '[]');
     const user = users.find((u: User) => u.email === email && u.password === password);
+    if (user?.email === "admin@eximq.com") {
+  user.role = "admin";
+}
     if (user) {
       setCurrentUser(user);
       localStorage.setItem('eximq_user', JSON.stringify(user));
