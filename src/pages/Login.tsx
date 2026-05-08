@@ -14,6 +14,10 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email.endsWith("@eximq")) {
+  setError("يجب استخدام بريد ينتهي بـ @eximq");
+  return;
+}
     setError('');
     if (login(email, password)) {
       navigate('/dashboard');
