@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import type { User } from '../types';
 
 interface AuthContextType {
+  loading: boolean;
   currentUser: User | null;
   login: (email: string, password: string) => boolean;
   logout: () => void;
@@ -25,10 +26,14 @@ const ADMIN_USER: User = {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-
+const [loading, setLoading] = useState(true);
   useEffect(() => {
     const saved = localStorage.getItem('eximq_user');
-    if (saved) setCurrentUser(JSON.parse(saved));
+    if (saved) {
+  setCurrentUser(JSON.parse(saved));
+}
+
+setLoading(false);
     const users = JSON.parse(localStorage.getItem('eximq_users') || '[]');
     if (!users.find((u: User) => u.id === 'admin-1')) {
       localStorage.setItem('eximq_users', JSON.stringify([ADMIN_USER]));
@@ -85,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, register, getUsers, deleteUser, updatePassword }}>
+    <AuthContext.Provider value={{ currentUser, loading, login, logout, register, getUsers, deleteUser, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

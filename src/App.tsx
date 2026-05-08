@@ -8,7 +8,8 @@ import UserDashboard from './pages/UserDashboard';
 import { useState } from 'react';
 
 function DashboardRouter() {
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
+  if (loading) return null;
   const [view, setView] = useState<'dashboard' | 'createUser'>('dashboard');
 
   if (!currentUser) return <Navigate to="/" replace />;
