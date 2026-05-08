@@ -26,11 +26,18 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      localStorage.setItem(
-        "eximq_user",
-        JSON.stringify({ email })
-      );
+     const role =
+  email === "admin@eximq.com"
+    ? "admin"
+    : "user";
 
+localStorage.setItem(
+  "eximq_user",
+  JSON.stringify({
+    email,
+    role
+  })
+);
       navigate('/dashboard');
 
     } catch (error) {
