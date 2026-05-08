@@ -16,7 +16,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.endsWith("@eximq")) {
+    if (!email.endsWith("@eximq.com")) {
       setError("يجب استخدام بريد ينتهي بـ @eximq");
       return;
     }
