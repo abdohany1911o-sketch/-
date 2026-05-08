@@ -17,7 +17,7 @@ export default function Login() {
     e.preventDefault();
 
     if (!email.endsWith("@eximq.com")) {
-      setError("يجب استخدام بريد ينتهي بـ @eximq");
+      setError("يجب استخدام بريد ينتهي بـ @eximq.com");
       return;
     }
 
